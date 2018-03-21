@@ -6,3 +6,6 @@ kafka-webview-ui/src/main/frontend/dist/
 kafka-webview-ui/src/main/resources/static/
 data/
 TODO
+.classpath
+.project
+.settings
