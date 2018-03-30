@@ -29,6 +29,12 @@
             jQuery(document).ready(function() {
                 // Fire off initial consume request
                 executeConsume('next');
+                
+                jQuery("#results-dialog").dialog({
+                	autoOpen: false,
+                	width: 500,
+                	modal: true
+                });
 
                 // Control Events
                 jQuery('#control-head').click(function() {
@@ -106,6 +112,12 @@
                     }
                 });
             });
+            
+            function showResultDialog(value) {
+            	var formattedValue = '<pre>' + value + '</pre>';
+            	jQuery('#results-dialog').html(formattedValue);
+            	jQuery('#results-dialog').dialog('open');
+            }
 
             function handleSeekResults(results) {
                 // Update consumer state UI
@@ -380,10 +392,13 @@
             </div>
             <!--/.col-->
         </div>
+        
+        <div id="results-dialog" title="Value">
+		</div>
 
         <!-- Results Template -->
         <script id="results-template" type="text/x-handlebars-template">
-            <tr>
+            <tr onclick=javascript:showResultDialog($(this).children().last().text())>
                 <td>{{partition}}</td>
                 <td>{{offset}}</td>
                 <td>

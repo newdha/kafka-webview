@@ -275,6 +275,12 @@
             var template = Handlebars.compile(source);
             SocketDetails.resultsTable = jQuery('#results-tbody');
             SocketDetails.resultsTemplate = template;
+            
+            jQuery("#results-dialog").dialog({
+            	autoOpen: false,
+            	width: 500,
+            	modal: true
+            });
 
             // Setup event handlers
             jQuery("form").on('submit', function (e) {
@@ -306,11 +312,20 @@
                 }
             });
         });
+        
+        function showResultDialog(value) {
+        	var formattedValue = '<pre>' + value + '</pre>';
+        	jQuery('#results-dialog').html(formattedValue);
+        	jQuery('#results-dialog').dialog('open');
+        }
     </script>
+    
+    <div id="results-dialog" title="Value">
+	</div>
 
     <!-- Results Template -->
     <script id="results-template" type="text/x-handlebars-template">
-        <tr>
+        <tr onclick=javascript:showResultDialog($(this).children().last().text())>
             <td>{{partition}}</td>
             <td>{{offset}}</td>
             <td>
