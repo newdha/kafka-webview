@@ -79,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .hasRole("ADMIN")
                 // All other requests must be authenticated
                 .anyRequest()
-                    .fullyAuthenticated()
+                    .permitAll()
                 .and()
 
             // Define how you login

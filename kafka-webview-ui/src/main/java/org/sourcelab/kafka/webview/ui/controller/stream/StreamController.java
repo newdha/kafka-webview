@@ -34,6 +34,7 @@ import org.sourcelab.kafka.webview.ui.manager.socket.WebSocketConsumersManager;
 import org.sourcelab.kafka.webview.ui.manager.ui.BreadCrumbManager;
 import org.sourcelab.kafka.webview.ui.manager.ui.FlashMessage;
 import org.sourcelab.kafka.webview.ui.manager.user.CustomUserDetails;
+import org.sourcelab.kafka.webview.ui.model.User;
 import org.sourcelab.kafka.webview.ui.model.View;
 import org.sourcelab.kafka.webview.ui.repository.ViewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.transaction.Transactional;
+
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -183,6 +186,13 @@ public class StreamController extends BaseController {
      * @return Currently logged in user's details.
      */
     private CustomUserDetails getLoggedInUser(final SimpMessageHeaderAccessor headerAccessor) {
-        return (CustomUserDetails) ((Authentication)headerAccessor.getUser()).getPrincipal();
+    	Principal principal = headerAccessor.getUser();
+    	if (principal != null) {
+    		return (CustomUserDetails) ((Authentication)principal).getPrincipal();
+    	} else {
+    		User user = new User();
+    		CustomUserDetails details = new CustomUserDetails(user);
+    		return details;
+    	}
     }
 }

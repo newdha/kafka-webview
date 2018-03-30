@@ -26,6 +26,7 @@ package org.sourcelab.kafka.webview.ui.controller;
 
 import org.sourcelab.kafka.webview.ui.manager.user.CustomUserDetails;
 import org.sourcelab.kafka.webview.ui.model.Cluster;
+import org.sourcelab.kafka.webview.ui.model.User;
 import org.sourcelab.kafka.webview.ui.model.View;
 import org.sourcelab.kafka.webview.ui.repository.ClusterRepository;
 import org.sourcelab.kafka.webview.ui.repository.ViewRepository;
@@ -68,7 +69,16 @@ public abstract class BaseController {
      * @return Currently logged in user's details.
      */
     protected CustomUserDetails getLoggedInUser() {
-        return (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	if (principal instanceof CustomUserDetails) {
+    		return (CustomUserDetails) principal;
+    	} else if (principal instanceof String) {
+    		User user = new User();
+    		CustomUserDetails details = new CustomUserDetails(user);
+    		return details;
+    	} else {
+    		return null;
+    	}
     }
 
     /**
